@@ -10,9 +10,9 @@ from graphql_types.customer import Customer
 class Query:
     @strawberry.field
     def customers(self, info: Info) -> typing.List[Customer]:
-        return [Customer(id=c['id'], first_name=c['first_name']) for c in info.context['customer'].get_all()]
+        return info.context['customer'].get_all()
 
     @strawberry.field
-    def customer(self, info: Info, _id: strawberry.ID) -> Customer:
+    def customer(self, info: Info, _id: strawberry.ID) -> typing.Optional[Customer]:
         c = info.context['customer'].get_by_id(_id)
-        return Customer(id=c['id'], first_name=c['first_name'])
+        return c

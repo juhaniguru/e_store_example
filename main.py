@@ -1,9 +1,11 @@
 import strawberry
 import uvicorn
 from fastapi import FastAPI
+from starlette.middleware.cors import CORSMiddleware
 from strawberry.fastapi import GraphQLRouter
 
 import controllers.customers
+import mutation
 import query
 import services.customers_sa
 
@@ -16,7 +18,16 @@ async def get_context(customer_service: services.customers_sa.CustomerService):
 
 app = FastAPI()
 
-schema = strawberry.Schema(query.Query)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+
+schema = strawberry.Schema(query.Query, mutation=mutation.Mutation)
 
 graphql_app = GraphQLRouter(
     schema,
