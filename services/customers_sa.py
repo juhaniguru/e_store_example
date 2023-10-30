@@ -19,7 +19,7 @@ class CustomersSA(BaseService):
 
     def get_all(self):
         customers = self.db.query(models.Customer).all()
-        print(customers)
+
         return customers
 
     def get_by_id(self, _id: int):

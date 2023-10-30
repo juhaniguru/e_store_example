@@ -16,7 +16,7 @@ async def get_customers(service: CustomerService):
 
 
 @router.get('/{_id}', response_model=Customer)
-async def get_customer(_id: int, service: CustomerService):
+async def get_customer(service: CustomerService, _id: int = Path(gt=0)):
     customer = service.get_by_id(_id)
     if customer is None:
         raise HTTPException(status_code=404, detail='Not found')
